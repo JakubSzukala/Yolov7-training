@@ -104,7 +104,7 @@ class Yolov7Trainer(Trainer):
         images, labels = batch[0], batch[1]
 
         fpn_heads_outputs = self.model(images)
-        loss, _ = self.loss_func(
+        loss, loss_items = self.loss_func(
             fpn_heads_outputs=fpn_heads_outputs, targets=labels, images=images
         )
 
@@ -112,6 +112,7 @@ class Yolov7Trainer(Trainer):
             "loss": loss,
             "model_outputs": fpn_heads_outputs,
             "batch_size": images.size(0),
+            "loss_items": loss_items,
         }
 
     def calculate_eval_batch_loss(self, batch) -> dict:
@@ -123,7 +124,7 @@ class Yolov7Trainer(Trainer):
                 batch[3].cpu(),
             )
             fpn_heads_outputs = self.model(images)
-            val_loss, _ = self.loss_func(
+            val_loss, loss_items = self.loss_func(
                 fpn_heads_outputs=fpn_heads_outputs, targets=labels
             )
 
@@ -151,6 +152,7 @@ class Yolov7Trainer(Trainer):
             "model_outputs": fpn_heads_outputs,
             "predictions": gathered_predictions,
             "batch_size": images.size(0),
+            "loss_items": loss_items
         }
 
     def get_formatted_preds(
