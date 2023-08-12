@@ -85,6 +85,7 @@ class Yolov7DetectionHeadWithAux(Yolov7DetectionHead):
         num_classes=80,
         anchor_sizes_per_layer=(),
         strides: torch.Tensor = (),
+        use_implicit_modules: bool = True,
         in_channels_per_layer=(),
     ):
         super().__init__(
